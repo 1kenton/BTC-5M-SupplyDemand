@@ -1,37 +1,11 @@
 version: "01"
-timeframe: "5m"
-strategy_name: "3-Step Price Action Formula"
+strategy_name: "3-Step Price Action — Supply & Demand"
 
-step_1_market_structure:
-  description: "Identify trend direction (uptrend vs downtrend)"
-  uptrend_rule: "higher highs and higher lows"
-  downtrend_rule: "lower lows and lower highs"
-  low_validation_rule: "A new low is only valid if it breaks the previous high"
-
-step_2_supply_demand:
-  description: "Find and trade supply/demand zones"
-  demand_zones:
-    when: "in uptrend"
-    setup: "Consolidation or sideways action before sharp upward move"
-    mark_from: "low to high of candle right before impulse move"
-    entry: "Price re-enters demand zone"
-    stop_loss: "below demand zone"
-    take_profit: "at recent highs"
-  supply_zones:
-    when: "in downtrend"
-    setup: "Consolidation or sideways action before sharp downward move"
-    mark_from: "high to low of candle right before impulse move"
-    entry: "Price re-enters supply zone"
-    stop_loss: "above supply zone"
-    take_profit: "at recent lows"
-
-step_3_risk_reward:
-  description: "Filter trades by risk-to-reward ratio"
-  minimum_ratio: 2.5
-  rule: "Only take trades where risk:reward >= 2.5:1"
-  example: "For every $100 risked, target at least $250 profit"
-  action: "Skip trades that don't meet 2.5:1 threshold"
-
-position_sizing:
-  risk_percent: 1.0
-  position_size_r: 0.5
+# Tunable parameters (Hermes changes ONE per reflection cycle)
+entry:
+  swing_n: 3                # n-bar pivot lookback for swing high/low detection
+  impulse_threshold: 1.5    # candle range must be >= this x ATR to be an impulse
+  impulse_body_ratio: 0.5   # candle body must be >= this fraction of range
+  min_rr: 2.5               # minimum risk-to-reward ratio to take a trade
+  zone_buffer_pct: 0.001    # SL buffer fraction beyond the zone edge
+  zone_max_age_bars: 80     # ignore zones older than this many 5m bars (~6.7 hours)
